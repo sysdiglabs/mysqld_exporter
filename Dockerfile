@@ -15,7 +15,7 @@ RUN cp mysqld_exporter /bin/mysqld_exporter
 FROM scratch as scratch
 COPY --from=builder /bin/mysqld_exporter /bin/mysqld_exporter
 EXPOSE      9104
-USER        nobody
+USER        59000:59000
 ENTRYPOINT  [ "/bin/mysqld_exporter" ]
 
 FROM quay.io/sysdig/sysdig-mini-ubi:1.1.10 as ubi
