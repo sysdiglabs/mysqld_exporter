@@ -18,7 +18,7 @@ EXPOSE      9104
 USER        59000:59000
 ENTRYPOINT  [ "/bin/mysqld_exporter" ]
 
-FROM quay.io/sysdig/sysdig-mini-ubi:1.1.14 as ubi
+FROM quay.io/sysdig/sysdig-mini-ubi:1.2.4 as ubi
 COPY --from=builder /bin/mysqld_exporter /bin/mysqld_exporter
 EXPOSE      9104
 USER        nobody
