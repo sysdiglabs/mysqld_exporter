@@ -1,4 +1,4 @@
-FROM golang:1.17.3 as builder
+FROM golang:1.18.0 as builder
 
 WORKDIR /go/src/github.com/prometheus/mysqld_exporter
 
