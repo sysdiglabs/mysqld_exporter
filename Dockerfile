@@ -1,12 +1,25 @@
-ARG ARCH="amd64"
-ARG OS="linux"
-FROM quay.io/prometheus/busybox-${OS}-${ARCH}:latest
-LABEL maintainer="The Prometheus Authors <prometheus-developers@googlegroups.com>"
+FROM golang:1.17.3 as builder
 
-ARG ARCH="amd64"
-ARG OS="linux"
-COPY .build/${OS}-${ARCH}/mysqld_exporter /bin/mysqld_exporter
+WORKDIR /go/src/github.com/prometheus/mysqld_exporter
 
+COPY go.mod go.sum ./
+RUN go mod download
+COPY collector ./collector
+COPY .promu.yml .promu.yml
+COPY Makefile Makefile
+COPY Makefile.common Makefile.common
+COPY mysqld_exporter.go mysqld_exporter.go
+RUN make build
+RUN cp mysqld_exporter /bin/mysqld_exporter
+
+FROM scratch as scratch
+COPY --from=builder /bin/mysqld_exporter /bin/mysqld_exporter
+EXPOSE      9104
+USER        59000:59000
+ENTRYPOINT  [ "/bin/mysqld_exporter" ]
+
+FROM quay.io/sysdig/sysdig-mini-ubi:1.2.12 as ubi
+COPY --from=builder /bin/mysqld_exporter /bin/mysqld_exporter
 EXPOSE      9104
 USER        nobody
 ENTRYPOINT  [ "/bin/mysqld_exporter" ]
