@@ -11,7 +11,7 @@ require (
 	github.com/satori/go.uuid v1.2.0
 	github.com/smartystreets/goconvey v1.7.2
 	gopkg.in/alecthomas/kingpin.v2 v2.2.6
-	gopkg.in/ini.v1 v1.63.2
+	gopkg.in/ini.v1 v1.66.6
 )
 
 go 1.13
