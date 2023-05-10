@@ -1,4 +1,4 @@
-FROM golang:1.18.3 as builder
+FROM golang:1.20.4 as builder
 
 WORKDIR /go/src/github.com/prometheus/mysqld_exporter
 
@@ -18,7 +18,7 @@ EXPOSE      9104
 USER        59000:59000
 ENTRYPOINT  [ "/bin/mysqld_exporter" ]
 
-FROM quay.io/sysdig/sysdig-mini-ubi:1.4.6 as ubi
+FROM quay.io/sysdig/sysdig-mini-ubi:1.4.11 as ubi
 COPY --from=builder /bin/mysqld_exporter /bin/mysqld_exporter
 EXPOSE      9104
 USER        nobody
